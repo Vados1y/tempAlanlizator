@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <unistd.h>
+#include "tempFunctions.h"
 
 int main(int argc, char *argv[]){
 
