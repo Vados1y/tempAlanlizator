@@ -6,8 +6,9 @@ int main(int argc, char *argv[]){
     int rez = 0;
     int m = 0;
     char* filename;
+    FILE *f = NULL;
 
-    opterr = 0;
+    opterr = 0; // Off warning message
     while (-1 != (rez = getopt(argc, argv, "hf:m:")))
     {
         switch (rez) {
@@ -37,6 +38,23 @@ int main(int argc, char *argv[]){
                 break;
         }
     }
+
+    f = fopen(filename, "r");
+    if (NULL == f){
+        printf("File %s not read! Try another file.\n", filename);
+        return 1;
+    }
+    else    printf("File %s read successfully!\n", filename);
+
+
+
+
+
+
+
+
+
+
 	return 0;
 }
 
