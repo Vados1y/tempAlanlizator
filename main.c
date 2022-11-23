@@ -2,12 +2,14 @@
 #include <unistd.h>
 #include "tempFunctions.h"
 
+extern void readFile(FILE* f);
+
 int main(int argc, char *argv[]){
 
     int rez = 0;
     int m = 0;
     char* filename;
-    FILE *f = NULL;
+    FILE *file = NULL;
 
     opterr = 0; // Off warning message
     while (-1 != (rez = getopt(argc, argv, "hf:m:")))
@@ -40,8 +42,8 @@ int main(int argc, char *argv[]){
         }
     }
 
-    f = fopen(filename, "r");
-    if (NULL == f){
+    file = fopen(filename, "r");
+    if (NULL == file){
         printf("File %s not read! Try another file.\n", filename);
         return 1;
     }
@@ -49,13 +51,13 @@ int main(int argc, char *argv[]){
 
 
 
+    readFile(file);
 
 
 
 
 
-
-
+    fclose(file);
 	return 0;
 }
 
