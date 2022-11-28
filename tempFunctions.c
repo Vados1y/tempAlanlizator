@@ -1,6 +1,13 @@
 #include "tempFunctions.h"
 
 #define paramNumbers 6
+#define getTime nowTime=time(NULL)
+#define putTime ctime(&nowTime)
+
+extern bool isErrors;
+extern bool isLog;
+extern FILE *logFile;
+extern char* filename;
 
 typedef struct
 {
@@ -81,8 +88,15 @@ bool correctData_check(int y, int mon, int d, int h, int min, int t){
 void readFile(FILE* f){
     int year, month, day, hour, minute, temp;
     int line = 1, symbolsCount = -1;
-    char buffer[21] = "*********************"; // Fill array with '*'
+    char buffer[21] = "*********************";  // Fill array with '*'
     char ch;
+    long int nowTime;
+
+    if (isLog) {
+        getTime;
+        fprintf(logFile, "\nFile updated on: %s", putTime);
+        fprintf(logFile, "File: %s\n", filename);
+    }
 
     for (line = 1; fscanf(f, "%20[^\n]s", buffer) != EOF; line++) // Loop by lines
     {
@@ -93,7 +107,8 @@ void readFile(FILE* f){
         } while (ch != '\n' && ch != EOF);
         
         if (symbolsCount > 0) {
-            printf("Error in line %2d\n", line);
+            if (isErrors)   printf(">>> Error in line %2d\n", line);
+            if (isLog)      fprintf(logFile, ">>> Error in line %2d\n", line);
             symbolsCount = -1;
         }
         symbolsCount = -1;
@@ -101,12 +116,14 @@ void readFile(FILE* f){
         /* Fill data in variables */    
         if (sscanf(buffer, "%d%*c%d%*c%d%*c%d%*c%d%*c%d",   // Read numbers and any symbol between
                             &year, &month, &day, &hour, &minute, &temp) != paramNumbers){   // 6 types of data check
-            printf("Error in line %2d\n", line);
+            if (isErrors)   printf(">>> Error in line %2d\n", line);
+            if (isLog)      fprintf(logFile, ">>> Error in line %2d\n", line);
             continue;
         }
         else {
             if (correctData_check(year, month, day, hour, minute, temp)) {
-                printf("Error in line %2d\n", line);
+                if (isErrors)    printf(">>> Error in line %2d\n", line);
+                if (isLog)      fprintf(logFile, ">>> Error in line %2d\n", line);
             }
             else {
 
@@ -124,6 +141,7 @@ void readFile(FILE* f){
             }
         }
     }
+    if (isLog)  fprintf(logFile, "*** End of file ***\n");
 }
 
 void printData(int chosenMonth) {

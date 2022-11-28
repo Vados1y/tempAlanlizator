@@ -5,18 +5,27 @@
 
 extern void readFile(FILE* f);
 
+bool    isLog = false,
+        isErrors = false;
+
+char* filename;
+
+FILE *logFile = NULL;
+
 int main(int argc, char *argv[]){
 
     int rez = 0, option_index = -1;
     int month = 0;
-    char* filename;
+    
     FILE *file = NULL;
 
-    const char* short_options = "hf:m:";
+    const char* short_options = "hf:m:le";
     const struct option long_options[] = {
         {"help", no_argument, NULL, 'h'},
         {"file", required_argument, NULL, 'f'},
         {"month", required_argument, NULL, 'm'},
+        {"log", no_argument, NULL, 'l'},
+        {"errors", no_argument, NULL, 'e'},
         {NULL, 0, NULL, 0}
     };
 
@@ -33,7 +42,7 @@ int main(int argc, char *argv[]){
             case 'm':
                     month = atoi(optarg);
                     if ((month < 1) || (month > 12)) {
-                        printf("Month error! Type -h for help.\n");
+                        printf("Month error! Type --help or -h for help.\n");
                         return 1;
                     }
                 break;
@@ -43,10 +52,22 @@ int main(int argc, char *argv[]){
                 filename = optarg;
                 printf("Selected file: %s\n", filename);
                 break;
+            
+            /* LOG ERRORS */
+            case 'l':
+                isLog = true;
+                logFile = fopen("errors_log.log", "a");
+                break;
+
+            /* PRINT ERRORS */
+            case 'e':
+                isErrors = true;
+                break;
 
             /* WRONG ARGUMENT */
             case '?':
-                printf("Wrong argument. Type -h for help.\n");
+                printf("Wrong argument. Type --help or -h for help.\n");
+                return 1;
                 break;
         }
         option_index = -1;
@@ -59,14 +80,10 @@ int main(int argc, char *argv[]){
     }
     else    printf("File %s read successfully!\n", filename);
 
-
-
     readFile(file);
     printData(month);
-
-
-
     fclose(file);
+    if (isLog)  fclose(logFile);
 	return 0;
 }
 

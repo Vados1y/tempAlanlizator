@@ -5,7 +5,7 @@
 #include <string.h>
 #include <stdbool.h>
 #include <inttypes.h>
-
+#include <time.h>
 
 void readFile(FILE* f);
 void printData(int);
