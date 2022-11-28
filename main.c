@@ -1,18 +1,27 @@
 #include <stdio.h>
 #include <unistd.h>
+#include <getopt.h>
 #include "tempFunctions.h"
 
 extern void readFile(FILE* f);
 
 int main(int argc, char *argv[]){
 
-    int rez = 0;
-    int month = -1;
+    int rez = 0, option_index = -1;
+    int month = 0;
     char* filename;
     FILE *file = NULL;
 
+    const char* short_options = "hf:m:";
+    const struct option long_options[] = {
+        {"help", no_argument, NULL, 'h'},
+        {"file", required_argument, NULL, 'f'},
+        {"month", required_argument, NULL, 'm'},
+        {NULL, 0, NULL, 0}
+    };
+
     opterr = 0;     // Off warning message
-    while (-1 != (rez = getopt(argc, argv, "hf:m:y")))
+    while (-1 != (rez = getopt_long(argc, argv, short_options, long_options, &option_index)))
     {
         switch (rez) {
             /* HELP */
@@ -22,14 +31,11 @@ int main(int argc, char *argv[]){
 
             /* MONTH CHOOSE */
             case 'm':
-                if (month == -1) {
                     month = atoi(optarg);
                     if ((month < 1) || (month > 12)) {
                         printf("Month error! Type -h for help.\n");
                         return 1;
                     }
-                }
-                else    printf("You have already selected info for the year!\n");
                 break;
 
             /* FILENAME SELECT */
@@ -38,16 +44,12 @@ int main(int argc, char *argv[]){
                 printf("Selected file: %s\n", filename);
                 break;
 
-            case 'y':
-                if (month == -1)    month = 0;
-                else                printf("You have already selected info for the month >%d< !\n", month);
-                break;
-
             /* WRONG ARGUMENT */
             case '?':
                 printf("Wrong argument. Type -h for help.\n");
                 break;
         }
+        option_index = -1;
     }
 
     file = fopen(filename, "r");
