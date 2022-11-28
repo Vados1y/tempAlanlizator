@@ -11,7 +11,7 @@ int main(int argc, char *argv[]){
     char* filename;
     FILE *file = NULL;
 
-    opterr = 0; // Off warning message
+    opterr = 0;     // Off warning message
     while (-1 != (rez = getopt(argc, argv, "hf:m:y")))
     {
         switch (rez) {

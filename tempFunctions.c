@@ -4,8 +4,8 @@
 
 typedef struct
 {
-    int64_t n;
     int64_t sum;
+    uint32_t n;    
     int8_t tMax;
     int8_t tMin;
 } tempDataType;
@@ -105,48 +105,38 @@ void readFile(FILE* f){
             continue;
         }
         else {
-            // printf ("Line %2d +\n", line);
             if (correctData_check(year, month, day, hour, minute, temp)) {
                 printf("Error in line %2d\n", line);
             }
             else {
-                // printf("Line %2d >>>  year:%4d\tmonth:%2d\tday:%2d\thour:%2d\tminute:%2d\ttemp:%3d\n", line, year, month, day, hour, minute, temp);
 
                 /* Fill the data for months */
                 tempData[month].sum += temp;
-                // printf("%d\n", tempData[month].sum);                                     // +
                 tempData[month].n += 1;
-                // printf("%d\n", tempData[month].n);                                       // +
                 if (temp < tempData[month].tMin)    tempData[month].tMin = temp;
                 if (temp > tempData[month].tMax)    tempData[month].tMax = temp;
-                // printf("%d %d\n", tempData[month].tMin, tempData[month].tMax);           // +
-                
-                // printf ("Month: %d\nn = %"PRId64", sum = %"PRId64", MIN = %"PRId8", MAX = %"PRId8"\n", month, tempData[month].n, tempData[month].sum, tempData[month].tMin, tempData[month].tMax);
 
                 /* Fill the data for year */
                 tempData[0].sum += temp;
                 tempData[0].n++;
                 if (temp < tempData[0].tMin)        tempData[0].tMin = temp;
                 if (temp > tempData[0].tMax)        tempData[0].tMax = temp;
-
             }
         }
-
-    
-
     }
 }
 
-void printData(int choosenMonth) {
-    if (choosenMonth == 0)    {}       // Year data
-
-    /* Chosen month */
-    // printf("%x\n", sizeof (choosenMonth));
-    printf ("Average temp for month >%d< is %.2f\n", choosenMonth, (float)tempData[choosenMonth].sum / (float)tempData[choosenMonth].n);
-    printf ("T max = %d\n", tempData[choosenMonth].tMax);
-    printf ("T min = %d\n", tempData[choosenMonth].tMin);
-
-    /* Chosen year */
-
-
+void printData(int chosenMonth) {
+    if (chosenMonth == 0) {
+        /* Chosen year */
+        printf ("Average temp for the year is %.2f\n", (float)tempData[0].sum / (float)tempData[0].n);
+        printf ("T max = %d\n", tempData[0].tMax);
+        printf ("T min = %d\n", tempData[0].tMin);
+    }
+    else {
+        /* Chosen month */
+        printf ("Average temp for the month >%d< is %.2f\n", chosenMonth, (float)tempData[chosenMonth].sum / (float)tempData[chosenMonth].n);
+        printf ("T max = %d\n", tempData[chosenMonth].tMax);
+        printf ("T min = %d\n", tempData[chosenMonth].tMin);
+    }
 }
