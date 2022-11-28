@@ -145,16 +145,21 @@ void readFile(FILE* f){
 }
 
 void printData(int chosenMonth) {
-    if (chosenMonth == 0) {
+    if (chosenMonth == 0 && tempData[0].n > 0) {
         /* Chosen year */
         printf ("Average temp for the year is %.2f\n", (float)tempData[0].sum / (float)tempData[0].n);
         printf ("T max = %d\n", tempData[0].tMax);
         printf ("T min = %d\n", tempData[0].tMin);
     }
-    else {
+
+    else if (chosenMonth != 0) {
         /* Chosen month */
-        printf ("Average temp for the month >%d< is %.2f\n", chosenMonth, (float)tempData[chosenMonth].sum / (float)tempData[chosenMonth].n);
-        printf ("T max = %d\n", tempData[chosenMonth].tMax);
-        printf ("T min = %d\n", tempData[chosenMonth].tMin);
+        if (tempData[chosenMonth].n > 0) {
+            printf ("Average temp for the month >%d< is %.2f\n", chosenMonth, (float)tempData[chosenMonth].sum / (float)tempData[chosenMonth].n);
+            printf ("T max = %d\n", tempData[chosenMonth].tMax);
+            printf ("T min = %d\n", tempData[chosenMonth].tMin);
+        }
+        else    printf("No data for month %d\n", chosenMonth);
     }
+    else        printf("No any data available\n");
 }
