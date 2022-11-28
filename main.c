@@ -7,12 +7,12 @@ extern void readFile(FILE* f);
 int main(int argc, char *argv[]){
 
     int rez = 0;
-    int m = 0;
+    int month = -1;
     char* filename;
     FILE *file = NULL;
 
     opterr = 0; // Off warning message
-    while (-1 != (rez = getopt(argc, argv, "hf:m:")))
+    while (-1 != (rez = getopt(argc, argv, "hf:m:y")))
     {
         switch (rez) {
             /* HELP */
@@ -22,17 +22,25 @@ int main(int argc, char *argv[]){
 
             /* MONTH CHOOSE */
             case 'm':
-                m = atoi(optarg);
-                if ((m < 1) || (m > 12)) {
-                    printf("Month error! Type -h for help.\n");
-                    return 1;
+                if (month == -1) {
+                    month = atoi(optarg);
+                    if ((month < 1) || (month > 12)) {
+                        printf("Month error! Type -h for help.\n");
+                        return 1;
+                    }
                 }
+                else    printf("You have already selected info for the year!\n");
                 break;
 
             /* FILENAME SELECT */
             case 'f':
                 filename = optarg;
                 printf("Selected file: %s\n", filename);
+                break;
+
+            case 'y':
+                if (month == -1)    month = 0;
+                else                printf("You have already selected info for the month >%d< !\n", month);
                 break;
 
             /* WRONG ARGUMENT */
@@ -52,8 +60,7 @@ int main(int argc, char *argv[]){
 
 
     readFile(file);
-
-
+    printData(month);
 
 
 

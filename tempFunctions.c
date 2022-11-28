@@ -2,6 +2,30 @@
 
 #define paramNumbers 6
 
+typedef struct
+{
+    int64_t n;
+    int64_t sum;
+    int8_t tMax;
+    int8_t tMin;
+} tempDataType;
+
+static tempDataType tempData[13] = {        // 0 - year, 1-12 - months
+    {0, 0, -100, 100},
+    {0, 0, -100, 100},
+    {0, 0, -100, 100},
+    {0, 0, -100, 100},
+    {0, 0, -100, 100},
+    {0, 0, -100, 100},
+    {0, 0, -100, 100},
+    {0, 0, -100, 100},
+    {0, 0, -100, 100},
+    {0, 0, -100, 100},
+    {0, 0, -100, 100},
+    {0, 0, -100, 100},
+    {0, 0, -100, 100},
+    }; 
+
 bool correctData_check(int y, int mon, int d, int h, int min, int t){
     bool error = false;
     
@@ -71,7 +95,6 @@ void readFile(FILE* f){
         if (symbolsCount > 0) {
             printf("Error in line %2d\n", line);
             symbolsCount = -1;
-            continue;
         }
         symbolsCount = -1;
 
@@ -79,6 +102,7 @@ void readFile(FILE* f){
         if (sscanf(buffer, "%d%*c%d%*c%d%*c%d%*c%d%*c%d",   // Read numbers and any symbol between
                             &year, &month, &day, &hour, &minute, &temp) != paramNumbers){   // 6 types of data check
             printf("Error in line %2d\n", line);
+            continue;
         }
         else {
             // printf ("Line %2d +\n", line);
@@ -86,11 +110,43 @@ void readFile(FILE* f){
                 printf("Error in line %2d\n", line);
             }
             else {
-                printf("Line %2d >>>  year:%4d\tmonth:%2d\tday:%2d\thour:%2d\tminute:%2d\ttemp:%3d\n", line, year, month, day, hour, minute, temp);
+                // printf("Line %2d >>>  year:%4d\tmonth:%2d\tday:%2d\thour:%2d\tminute:%2d\ttemp:%3d\n", line, year, month, day, hour, minute, temp);
+
+                /* Fill the data for months */
+                tempData[month].sum += temp;
+                // printf("%d\n", tempData[month].sum);                                     // +
+                tempData[month].n += 1;
+                // printf("%d\n", tempData[month].n);                                       // +
+                if (temp < tempData[month].tMin)    tempData[month].tMin = temp;
+                if (temp > tempData[month].tMax)    tempData[month].tMax = temp;
+                // printf("%d %d\n", tempData[month].tMin, tempData[month].tMax);           // +
+                
+                // printf ("Month: %d\nn = %"PRId64", sum = %"PRId64", MIN = %"PRId8", MAX = %"PRId8"\n", month, tempData[month].n, tempData[month].sum, tempData[month].tMin, tempData[month].tMax);
+
+                /* Fill the data for year */
+                tempData[0].sum += temp;
+                tempData[0].n++;
+                if (temp < tempData[0].tMin)        tempData[0].tMin = temp;
+                if (temp > tempData[0].tMax)        tempData[0].tMax = temp;
+
             }
         }
 
     
 
     }
+}
+
+void printData(int choosenMonth) {
+    if (choosenMonth == 0)    {}       // Year data
+
+    /* Chosen month */
+    // printf("%x\n", sizeof (choosenMonth));
+    printf ("Average temp for month >%d< is %.2f\n", choosenMonth, (float)tempData[choosenMonth].sum / (float)tempData[choosenMonth].n);
+    printf ("T max = %d\n", tempData[choosenMonth].tMax);
+    printf ("T min = %d\n", tempData[choosenMonth].tMin);
+
+    /* Chosen year */
+
+
 }
