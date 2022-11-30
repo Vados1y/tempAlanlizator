@@ -4,6 +4,7 @@
 #include "tempFunctions.h"
 
 extern void readFile(FILE* f);
+bool isCsv(char *filename);
 
 bool    isLog = false,
         isErrors = false;
@@ -50,7 +51,8 @@ int main(int argc, char *argv[]){
             /* FILENAME SELECT */
             case 'f':
                 filename = optarg;
-                printf("Selected file: %s\n", filename);
+                if (isCsv (filename))       {printf("Selected file: %s\n", filename); return 0;}
+                else                        {printf("File error!\n"); return 1;}
                 break;
             
             /* LOG ERRORS */
@@ -85,6 +87,32 @@ int main(int argc, char *argv[]){
     fclose(file);
     if (isLog)  fclose(logFile);
 	return 0;
+}
+
+
+bool isCsv(char *filename) {
+    bool isEx = false;
+    char symbol;
+    int i = 0;
+    do
+    {
+        symbol = *(filename + i++);
+        if (symbol == '.')      isEx = true;
+        if (symbol == 92 || symbol == '/')     isEx = false;
+
+        if (isEx) {
+            if (*(filename + i) == 'c' && *(filename + i + 1) == 's' && *(filename + i + 2) == 'v') {
+                return true;
+                break;
+            }
+        }
+
+        if (i > 100) {
+            return false;
+            break;
+        }
+
+    } while (true);
 }
 
 
