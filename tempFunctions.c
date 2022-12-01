@@ -17,6 +17,22 @@ typedef struct
     int8_t tMin;
 } tempDataType;
 
+char monthNames[12][10] = {
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December"
+    };
+
+
 static tempDataType tempData[13] = {        // 0 - year, 1-12 - months
     {0, 0, -100, 100},
     {0, 0, -100, 100},
@@ -155,11 +171,11 @@ void printData(int chosenMonth) {
     else if (chosenMonth != 0) {
         /* Chosen month */
         if (tempData[chosenMonth].n > 0) {
-            printf ("Average temp for the month >%d< is %.2f\n", chosenMonth, (float)tempData[chosenMonth].sum / (float)tempData[chosenMonth].n);
+            printf ("Average temp for %s is %.2f\n", monthNames[chosenMonth - 1], (float)tempData[chosenMonth].sum / (float)tempData[chosenMonth].n);
             printf ("T max = %d\n", tempData[chosenMonth].tMax);
             printf ("T min = %d\n", tempData[chosenMonth].tMin);
         }
-        else    printf("No data for month %d\n", chosenMonth);
+        else    printf("No data for %s\n", monthNames[chosenMonth - 1]);
     }
     else        printf("No any data available\n");
 }
