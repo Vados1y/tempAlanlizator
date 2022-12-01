@@ -36,7 +36,13 @@ int main(int argc, char *argv[]){
         switch (rez) {
             /* HELP */
             case 'h':
-                printf("d e s c r i p t i o n.\n");
+                printf("It shows temperature stats for the period (month or year).\n");
+                printf("Supported keys:\n");
+                printf("-f | --file <path>\t Specify the path to the *.scv file;\n");
+                printf("[-h | --help]\t\t Help section;\n");
+                printf("[-m | --month]\t\t Specify interested month (default - the year);\n");
+                printf("[-l | --log]\t\t Turns on printing errors in the file (default - off);\n");
+                printf("[-e | --errors]\t\t Turns on printing errors in the console (default - off).\n");
                 break;
 
             /* MONTH CHOOSE */
@@ -51,7 +57,7 @@ int main(int argc, char *argv[]){
             /* FILENAME SELECT */
             case 'f':
                 filename = optarg;
-                if (isCsv (filename))       {printf("Selected file: %s\n", filename); return 0;}
+                if (isCsv (filename))       {printf("Selected file: %s\n", filename);}
                 else                        {printf("File error!\n"); return 1;}
                 break;
             
