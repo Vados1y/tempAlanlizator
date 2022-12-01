@@ -5,6 +5,7 @@
 
 extern void readFile(FILE* f);
 bool isCsv(char *filename);
+void startPrint(void);
 
 bool    isLog = false,
         isErrors = false;
@@ -31,6 +32,7 @@ int main(int argc, char *argv[]){
     };
 
     opterr = 0;     // Off warning message
+    startPrint();   // Print the author info
     while (-1 != (rez = getopt_long(argc, argv, short_options, long_options, &option_index)))
     {
         switch (rez) {
@@ -97,7 +99,6 @@ int main(int argc, char *argv[]){
 	return 0;
 }
 
-
 bool isCsv(char *filename) {
     bool isEx = false;
     char symbol;
@@ -123,4 +124,12 @@ bool isCsv(char *filename) {
     } while (true);
 }
 
-
+void startPrint(void) {
+    printf("                        __        __             _    __          __          ___     \n");
+    printf("   ____ ___  ____ _____/ /__     / /_  __  __   | |  / /___ _____/ /___  ____<  /_  __\n");
+    printf("  / __ `__ \\/ __ `/ __  / _ \\   / __ \\/ / / /   | | / / __ `/ __  / __ \\/ ___/ / / / /\n");
+    printf(" / / / / / / /_/ / /_/ /  __/  / /_/ / /_/ /    | |/ / /_/ / /_/ / /_/ (__  ) / /_/ / \n");
+    printf("/_/ /_/ /_/\\__,_/\\__,_/\\___/  /_.___/\\__, /     |___/\\__,_/\\__,_/\\____/____/_/\\__, /  \n");
+    printf("                                    /____/                                   /____/   \n");
+    printf("\n");
+}
