@@ -49,7 +49,7 @@ int main(int argc, char *argv[]){
             case 'm':
                     month = atoi(optarg);
                     if ((month < 1) || (month > 12)) {
-                        printf("Month error! Type --help or -h for help.\n");
+                        printf("Month error! Please, select the month from 1 to 12.\nType -h or --help for help.\n");   // +
                         return 1;
                     }
                 break;
@@ -58,7 +58,7 @@ int main(int argc, char *argv[]){
             case 'f':
                 filename = optarg;
                 if (isCsv (filename))       {printf("Selected file: %s\n", filename);}
-                else                        {printf("File error!\n"); return 1;}
+                else                        {printf("File error! The file extension isn't .csv\n"); return 1;}  // +
                 break;
             
             /* LOG ERRORS */
@@ -74,7 +74,7 @@ int main(int argc, char *argv[]){
 
             /* WRONG ARGUMENT */
             case '?':
-                printf("Wrong argument. Type --help or -h for help.\n");
+                printf("Wrong argument. Type --help or -h for help.\n");    // +
                 return 1;
                 break;
         }
@@ -83,15 +83,17 @@ int main(int argc, char *argv[]){
 
     file = fopen(filename, "r");
     if (NULL == file){
-        printf("File %s not read! Try another file.\n", filename);
+        printf("File error! File %s doesn't exist. Try another file.\n", filename);     // +
         return 1;
     }
-    else    printf("File %s read successfully!\n", filename);
+    else    printf("File %s read successfully!\n\n", filename); // +
 
     readFile(file);
+    if (isErrors)   printf("\n");
     printData(month);
     fclose(file);
     if (isLog)  fclose(logFile);
+    printf ("\n");
 	return 0;
 }
 

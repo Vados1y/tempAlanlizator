@@ -107,8 +107,8 @@ void readFile(FILE* f){
         } while (ch != '\n' && ch != EOF);
         
         if (symbolsCount > 0) {
-            if (isErrors)   printf(">>> Error in line %2d\n", line);
-            if (isLog)      fprintf(logFile, ">>> Error in line %2d\n", line);
+            if (isErrors)   printf(">>> Error in line %d: Too many symbols.\n", line);     // +
+            if (isLog)      fprintf(logFile, ">>> Error in line %d: Too many symbols.\n", line);   //+
             symbolsCount = -1;
         }
         symbolsCount = -1;
@@ -116,14 +116,14 @@ void readFile(FILE* f){
         /* Fill data in variables */    
         if (sscanf(buffer, "%d%*c%d%*c%d%*c%d%*c%d%*c%d",   // Read numbers and any symbol between
                             &year, &month, &day, &hour, &minute, &temp) != paramNumbers){   // 6 types of data check
-            if (isErrors)   printf(">>> Error in line %2d\n", line);
-            if (isLog)      fprintf(logFile, ">>> Error in line %2d\n", line);
+            if (isErrors)   printf(">>> Error in line %d: Too few arguments or data syntax error.\n", line);   // +
+            if (isLog)      fprintf(logFile, ">>> Error in line %d: Too few arguments or data syntax error.\n", line);     //+
             continue;
         }
         else {
             if (correctData_check(year, month, day, hour, minute, temp)) {
-                if (isErrors)    printf(">>> Error in line %2d\n", line);
-                if (isLog)      fprintf(logFile, ">>> Error in line %2d\n", line);
+                if (isErrors)    printf(">>> Error in line %d: Data error.\n", line);   // +
+                if (isLog)      fprintf(logFile, ">>> Error in line %d: Data error.\n", line); // +
             }
             else {
 
