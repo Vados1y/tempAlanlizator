@@ -49,6 +49,8 @@ static tempDataType tempData[13] = {        // 0 - year, 1-12 - months
     {0, 0, -100, 100},
     }; 
 
+static int year;
+
 bool correctData_check(int y, int mon, int d, int h, int min, int t){
     bool error = false;
     
@@ -102,7 +104,7 @@ bool correctData_check(int y, int mon, int d, int h, int min, int t){
 
 
 void readFile(FILE* f){
-    int year, month, day, hour, minute, temp;
+    int month, day, hour, minute, temp;
     int line = 1, symbolsCount = -1;
     char buffer[21] = "*********************";  // Fill array with '*'
     char ch;
@@ -163,19 +165,60 @@ void readFile(FILE* f){
 void printData(int chosenMonth) {
     if (chosenMonth == 0 && tempData[0].n > 0) {
         /* Chosen year */
-        printf ("Average temp for the year is %.2f\n", (float)tempData[0].sum / (float)tempData[0].n);
-        printf ("T max = %d\n", tempData[0].tMax);
-        printf ("T min = %d\n", tempData[0].tMin);
+
+        /* Head */
+        printf("===================================================\n");
+        printf("|             |            Temperature            |\n");
+        printf("|    Month    |-----------------------------------|\n");
+        printf("|             |    Min    |  Average  |    Max    |\n");
+
+        /* Months data print */
+        for (int i = 0; i < 12; i++) {
+            if (tempData[i + 1].n > 0) {    // If data for the month
+                printf("|-------------------------------------------------|\n");
+                printf("|  %-9s  |    %-3d    |  %-6.2f   |    %-3d    |\n", monthNames[i], tempData[i + 1].tMin,
+                                                                            (float)tempData[i + 1].sum / (float)tempData[i + 1].n, tempData[i + 1].tMax);    // |   %5.2f   
+            }
+
+            else {                          // If no data for the month
+                printf("|-------------------------------------------------|\n");
+                printf("|  %-9s  |     >>> No data available <<<     |\n", monthNames[i]);
+            }                                                         
+        }
+
+        printf("|-------------------------------------------------|\n");
+        printf("|                      * * *                      |\n");
+        printf("|-------------------------------------------------|\n");
+
+        /* Year data print */
+        printf("|  Year: %4d |    %-3d    |  %-6.2f   |    %-3d    |\n", year, tempData[0].tMin,
+                                                                            (float)tempData[0].sum / (float)tempData[0].n, tempData[0].tMax);
+        printf("===================================================\n");
     }
 
     else if (chosenMonth != 0) {
         /* Chosen month */
+
+        /* Head */
+        printf("===================================================\n");
+        printf("|             |            Temperature            |\n");
+        printf("|    Month    |-----------------------------------|\n");
+        printf("|             |    Min    |  Average  |    Max    |\n");
+        printf("|-------------------------------------------------|\n");
+
+        /* Month data print */
         if (tempData[chosenMonth].n > 0) {
-            printf ("Average temp for %s is %.2f\n", monthNames[chosenMonth - 1], (float)tempData[chosenMonth].sum / (float)tempData[chosenMonth].n);
-            printf ("T max = %d\n", tempData[chosenMonth].tMax);
-            printf ("T min = %d\n", tempData[chosenMonth].tMin);
+            printf("|  %-9s  |    %-3d    |  %-6.2f   |    %-3d    |\n", monthNames[chosenMonth], tempData[chosenMonth].tMin,
+                                                                                (float)tempData[chosenMonth].sum / (float)tempData[chosenMonth].n, tempData[chosenMonth].tMax);
         }
-        else    printf("No data for %s\n", monthNames[chosenMonth - 1]);
+
+        /* If no data for the month */
+        else {
+            printf("|  %-9s  |     >>> No data available <<<     |\n", monthNames[chosenMonth]);
+        }
+        printf("===================================================\n");                                                                            
     }
+
+    /* If no any data */
     else        printf("No any data available\n");
 }
