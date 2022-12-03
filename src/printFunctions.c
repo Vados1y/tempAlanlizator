@@ -1,5 +1,6 @@
 #include "..\inc\printFunctions.h"
 
+/* Functions section */
 void printHelp(void) {
     printf("It shows temperature stats for the period (month or year).\n");
     printf("Supported keys:\n");
