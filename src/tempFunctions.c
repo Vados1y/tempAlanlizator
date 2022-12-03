@@ -1,5 +1,17 @@
+#define WIN
+// #define LIN
+
+#ifdef LIN
+#include "../inc/printFunctions.h"
+#include "../inc/tempFunctions.h"
+
+#else
 #include "..\inc\printFunctions.h"
 #include "..\inc\tempFunctions.h"
+
+#endif
+
+
 
 /* Defines section */
 #define paramNumbers 6

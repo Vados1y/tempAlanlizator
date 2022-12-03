@@ -1,4 +1,13 @@
+#define WIN
+// #define LIN
+
+#ifdef LIN
+#include "./inc/main.h"
+
+#else
 #include ".\inc\main.h"
+
+#endif
 
 /* Functions prototypes */
 bool isCsv(char *filename);

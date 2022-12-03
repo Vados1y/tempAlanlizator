@@ -1,4 +1,13 @@
+#define WIN
+// #define LIN
+
+#ifdef LIN
+#include "../inc/printFunctions.h"
+
+#else
 #include "..\inc\printFunctions.h"
+
+#endif
 
 /* Functions section */
 void printHelp(void) {
