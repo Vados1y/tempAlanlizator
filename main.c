@@ -1,6 +1,7 @@
 #include <unistd.h>
 #include <getopt.h>
 #include "tempFunctions.h"
+#include "printFunctions.h"
 
 extern void readFile(FILE* f);
 bool isCsv(char *filename);
@@ -31,19 +32,14 @@ int main(int argc, char *argv[]){
     };
 
     opterr = 0;     // Off warning message
-    startPrint();   // Print the author info
+    printName();    // Print the author info
     while (-1 != (rez = getopt_long(argc, argv, short_options, long_options, &option_index)))
     {
         switch (rez) {
             /* HELP */
             case 'h':
-                printf("It shows temperature stats for the period (month or year).\n");
-                printf("Supported keys:\n");
-                printf("-f | --file <path>\t Specify the path to the *.scv file;\n");
-                printf("[-h | --help]\t\t Help section;\n");
-                printf("[-m | --month]\t\t Specify interested month (default - the year);\n");
-                printf("[-l | --log]\t\t Turns on printing errors in the file (default - off);\n");
-                printf("[-e | --errors]\t\t Turns on printing errors in the console (default - off).\n");
+                printHelp();
+                return 0;
                 break;
 
             /* MONTH CHOOSE */
@@ -121,14 +117,4 @@ bool isCsv(char *filename) {
         }
 
     } while (true);
-}
-
-void startPrint(void) {
-    printf("                        __        __             _    __          __          ___     \n");
-    printf("   ____ ___  ____ _____/ /__     / /_  __  __   | |  / /___ _____/ /___  ____<  /_  __\n");
-    printf("  / __ `__ \\/ __ `/ __  / _ \\   / __ \\/ / / /   | | / / __ `/ __  / __ \\/ ___/ / / / /\n");
-    printf(" / / / / / / /_/ / /_/ /  __/  / /_/ / /_/ /    | |/ / /_/ / /_/ / /_/ (__  ) / /_/ / \n");
-    printf("/_/ /_/ /_/\\__,_/\\__,_/\\___/  /_.___/\\__, /     |___/\\__,_/\\__,_/\\____/____/_/\\__, /  \n");
-    printf("                                    /____/                                   /____/   \n");
-    printf("\n");
 }

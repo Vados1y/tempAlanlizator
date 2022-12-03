@@ -1,4 +1,5 @@
 #include "tempFunctions.h"
+#include "printFunctions.h"
 
 #define paramNumbers 6
 #define getTime nowTime=time(NULL)
@@ -167,56 +168,46 @@ void printData(int chosenMonth) {
         /* Chosen year */
 
         /* Head */
-        printf("===================================================\n");
-        printf("|             |            Temperature            |\n");
-        printf("|    Month    |-----------------------------------|\n");
-        printf("|             |    Min    |  Average  |    Max    |\n");
+        printHead();
 
         /* Months data print */
         for (int i = 0; i < 12; i++) {
             if (tempData[i + 1].n > 0) {    // If data for the month
-                printf("|-------------------------------------------------|\n");
-                printf("|  %-9s  |    %-3d    |  %-6.2f   |    %-3d    |\n", monthNames[i], tempData[i + 1].tMin,
-                                                                            (float)tempData[i + 1].sum / (float)tempData[i + 1].n, tempData[i + 1].tMax);    // |   %5.2f   
+                printSeparator();
+                printData_month(monthNames[i], tempData[i + 1].tMin, (float)tempData[i + 1].sum / (float)tempData[i + 1].n, tempData[i + 1].tMax);
             }
 
             else {                          // If no data for the month
-                printf("|-------------------------------------------------|\n");
-                printf("|  %-9s  |     >>> No data available <<<     |\n", monthNames[i]);
+                printSeparator();
+                printNOdata(monthNames[i]);
             }                                                         
         }
 
-        printf("|-------------------------------------------------|\n");
-        printf("|                      * * *                      |\n");
-        printf("|-------------------------------------------------|\n");
+        printSeparatorLong();
 
         /* Year data print */
-        printf("|  Year: %4d |    %-3d    |  %-6.2f   |    %-3d    |\n", year, tempData[0].tMin,
-                                                                            (float)tempData[0].sum / (float)tempData[0].n, tempData[0].tMax);
-        printf("===================================================\n");
+        printData_year(year, tempData[0].tMin, (float)tempData[0].sum / (float)tempData[0].n, tempData[0].tMax);
+        printStartEnd();
     }
 
     else if (chosenMonth != 0) {
         /* Chosen month */
 
         /* Head */
-        printf("===================================================\n");
-        printf("|             |            Temperature            |\n");
-        printf("|    Month    |-----------------------------------|\n");
-        printf("|             |    Min    |  Average  |    Max    |\n");
-        printf("|-------------------------------------------------|\n");
+        printHead();
 
         /* Month data print */
         if (tempData[chosenMonth].n > 0) {
-            printf("|  %-9s  |    %-3d    |  %-6.2f   |    %-3d    |\n", monthNames[chosenMonth], tempData[chosenMonth].tMin,
-                                                                                (float)tempData[chosenMonth].sum / (float)tempData[chosenMonth].n, tempData[chosenMonth].tMax);
+            printSeparator();
+            printData_month(monthNames[chosenMonth], tempData[chosenMonth].tMin, (float)tempData[chosenMonth].sum / (float)tempData[chosenMonth].n, tempData[chosenMonth].tMax);
         }
 
         /* If no data for the month */
         else {
-            printf("|  %-9s  |     >>> No data available <<<     |\n", monthNames[chosenMonth]);
+            printSeparator();
+            printNOdata(monthNames[chosenMonth]);
         }
-        printf("===================================================\n");                                                                            
+        printStartEnd();
     }
 
     /* If no any data */
