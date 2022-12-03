@@ -1,7 +1,7 @@
 #include <unistd.h>
 #include <getopt.h>
-#include "tempFunctions.h"
-#include "printFunctions.h"
+#include ".\inc\tempFunctions.h"
+#include ".\inc\printFunctions.h"
 
 extern void readFile(FILE* f);
 bool isCsv(char *filename);

@@ -1,16 +1,16 @@
 all: main
 
 main: main.o tempFunctions.o printFunctions.o
-	gcc main.o tempFunctions.o printFunctions.o -o main
+	gcc .\main.o .\tempFunctions.o .\printFunctions.o -o main
 
-main.o: main.c
-	gcc -c main.c
+main.o: .\main.c
+	gcc -c .\main.c
 
-tempFunctions.o: tempFunctions.c
-	gcc -c tempFunctions.c
+tempFunctions.o: .\src\tempFunctions.c
+	gcc -c .\src\tempFunctions.c
 
-printFunctions.o: printFunctions.c
-	gcc -c printFunctions.c
+printFunctions.o: .\src\printFunctions.c
+	gcc -c .\src\printFunctions.c
 
 clean:
 	del *.o *.exe

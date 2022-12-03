@@ -1,4 +1,4 @@
-#include "printFunctions.h"
+#include "..\inc\printFunctions.h"
 
 void printHelp(void) {
     printf("It shows temperature stats for the period (month or year).\n");

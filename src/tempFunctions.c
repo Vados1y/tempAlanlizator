@@ -1,5 +1,5 @@
-#include "tempFunctions.h"
-#include "printFunctions.h"
+#include "..\inc\printFunctions.h"
+#include "..\inc\tempFunctions.h"
 
 #define paramNumbers 6
 #define getTime nowTime=time(NULL)
