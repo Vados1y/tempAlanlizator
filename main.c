@@ -1,27 +1,23 @@
-#include <unistd.h>
-#include <getopt.h>
-#include ".\inc\tempFunctions.h"
-#include ".\inc\printFunctions.h"
+#include ".\inc\main.h"
 
-extern void readFile(FILE* f);
+/* Functions prototypes */
 bool isCsv(char *filename);
-void startPrint(void);
 
-bool    isLog = false,
-        isErrors = false;
-
-char* filename;
-
+/* Global variables */
+bool isLog = false, isErrors = false;
 FILE *logFile = NULL;
+char* filename;
 
 int main(int argc, char *argv[]){
 
-    int rez = 0, option_index = -1;
-    int month = 0;
-    
+    /* Local variables */
+    int rez = 0, option_index = -1, month = 0;
     FILE *file = NULL;
 
+    /* Local constants */
     const char* short_options = "hf:m:le";
+
+    /* Command line keys */
     const struct option long_options[] = {
         {"help", no_argument, NULL, 'h'},
         {"file", required_argument, NULL, 'f'},
@@ -33,6 +29,8 @@ int main(int argc, char *argv[]){
 
     opterr = 0;     // Off warning message
     printName();    // Print the author info
+
+    /* Command line arguments processing */
     while (-1 != (rez = getopt_long(argc, argv, short_options, long_options, &option_index)))
     {
         switch (rez) {
@@ -44,18 +42,23 @@ int main(int argc, char *argv[]){
 
             /* MONTH CHOOSE */
             case 'm':
-                    month = atoi(optarg);
-                    if ((month < 1) || (month > 12)) {
-                        printf("Month error! Please, select the month from 1 to 12.\nType -h or --help for help.\n");   // +
-                        return 1;
-                    }
+                month = atoi(optarg);   // char -> int
+                if ((month < 1) || (month > 12)) {
+                    printf("Month error! Please, select the month from 1 to 12.\nType -h or --help for help.\n");
+                    return 1;
+                }
                 break;
 
             /* FILENAME SELECT */
             case 'f':
                 filename = optarg;
-                if (isCsv (filename))       {printf("Selected file: %s\n", filename);}
-                else                        {printf("File error! The file extension isn't .csv\n"); return 1;}  // +
+                if (isCsv (filename)) {
+                    printf("Selected file: %s\n", filename);
+                }
+                else {
+                    printf("File error! The file extension isn't .csv\n");
+                    return 1;
+                }
                 break;
             
             /* LOG ERRORS */
@@ -71,24 +74,31 @@ int main(int argc, char *argv[]){
 
             /* WRONG ARGUMENT */
             case '?':
-                printf("Wrong argument. Type --help or -h for help.\n");    // +
+                printf("Wrong argument. Type --help or -h for help.\n");
                 return 1;
                 break;
         }
         option_index = -1;
     }
 
-    file = fopen(filename, "r");
-    if (NULL == file){
-        printf("File error! File %s doesn't exist. Try another file.\n", filename);     // +
+    file = fopen(filename, "r");    // Open chosen file
+    if (NULL == file) {
+        printf("File error! File %s doesn't exist. Try another file.\n", filename);
         return 1;
     }
-    else    printf("File %s read successfully!\n\n", filename); // +
+    else    printf("File %s read successfully!\n\n", filename);
 
+    /* Read file function */
     readFile(file);
+
     if (isErrors)   printf("\n");
+
+    /* Write chosen data */
     printData(month);
+
+    /* Close chosen file */
     fclose(file);
+
     if (isLog)  fclose(logFile);
     printf ("\n");
 	return 0;
@@ -115,6 +125,5 @@ bool isCsv(char *filename) {
             return false;
             break;
         }
-
     } while (true);
 }
